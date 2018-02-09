@@ -1,31 +1,33 @@
-node {
+pipeline {
  	// Clean workspace before doing anything
     deleteDir()
 
     try {
-        stage ('Clone') {
-        	checkout scm
-        }
-        stage ('Build') {
-			steps {
-				//sh 'mvn clean package'
-				echo 'Building...'
+		stages {
+			stage ('Clone') {
+				checkout scm
 			}
-        }
-        stage ('Tests') {
-	        parallel 'static': {
-	            echo 'shell scripts to run static tests...'
-	        },
-	        'unit': {
-	            echo 'shell scripts to run unit tests...'
-	        },
-	        'integration': {
-	            echo 'shell scripts to run integration tests...'
-	        }
-        }
-      	stage ('Deploy') {
-            echo 'shell scripts to deploy to server...'
-      	}
+			stage ('Build') {
+				steps {
+					bat echo 'Building...'
+					bat 'mvn clean package'
+				}
+			}
+			stage ('Tests') {
+				parallel 'static': {
+					echo 'shell scripts to run static tests...'
+				},
+				'unit': {
+					echo 'shell scripts to run unit tests...'
+				},
+				'integration': {
+					echo 'shell scripts to run integration tests...'
+				}
+			}
+			stage ('Deploy') {
+				echo 'shell scripts to deploy to server...'
+			}
+		}
     } catch (err) {
         currentBuild.result = 'FAILED'
         throw err
