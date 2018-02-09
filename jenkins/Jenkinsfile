@@ -22,7 +22,6 @@ pipeline {
 			}
 		}
 		stage ('Build Docker Image') {
-			agent any
 			steps {
 				bat "echo 'Building docker image...'"
 				sh 'docker build -t tyt/myspringapp:latest ./docker/'
