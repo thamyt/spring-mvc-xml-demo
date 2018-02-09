@@ -7,7 +7,8 @@ node {
         	checkout scm
         }
         stage ('Build') {
-        	bat "echo 'shell scripts to build project...'"
+        	//bat "echo 'shell scripts to build project...'"
+			bat "mvn clean package"
         }
         stage ('Tests') {
 	        parallel 'static': {
