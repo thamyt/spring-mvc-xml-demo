@@ -1,5 +1,4 @@
 pipeline {
-	def app
 	agent any
     options {
         timeout(time: 1, unit: 'HOURS') 
@@ -23,9 +22,11 @@ pipeline {
 			}
 		}
 		stage ('Build Docker Image') {
+			agent any
 			steps {
-				app = docker.build("tyt/myspringapp")
-			}
+				bat "echo 'Building docker image...'"
+				sh 'docker build -t tyt/myspringapp:latest ./docker/'
+			}		
 		}
 		stage ('Tests') {
 			steps {
