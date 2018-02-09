@@ -17,26 +17,26 @@ pipeline {
 		}
 		stage ('Build') {
 			steps {
-				bat echo 'Building...'
+				bat "echo 'Building...'"
 				bat 'mvn clean package'
 			}
 		}
 		stage ('Tests') {
 			steps {
 				parallel 'static': {
-					echo 'shell scripts to run static tests...'
+					bat "echo 'shell scripts to run static tests...'"
 				},
 				'unit': {
-					echo 'shell scripts to run unit tests...'
+					bat "echo 'shell scripts to run unit tests...'"
 				},
 				'integration': {
-					echo 'shell scripts to run integration tests...'
+					bat "echo 'shell scripts to run integration tests...'"
 				}
 			}
 		}
 		stage ('Deploy') {
 			steps {
-				echo 'shell scripts to deploy to server...'
+				bat "echo 'shell scripts to deploy to server...'"
 			}
 		}
     }
