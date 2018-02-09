@@ -7,8 +7,10 @@ node {
         	checkout scm
         }
         stage ('Build') {
-        	mvn clean package
-			echo 'shell scripts to build project...'
+			steps {
+				echo 'shell scripts to build project...'
+				mvn clean package
+			}
         }
         stage ('Tests') {
 	        parallel 'static': {
