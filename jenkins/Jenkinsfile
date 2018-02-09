@@ -11,7 +11,9 @@ pipeline {
             }
 		}
 		stage ('Git Clone') {
-			checkout scm
+			steps {
+				checkout scm
+			}
 		}
 		stage ('Build') {
 			steps {
@@ -20,18 +22,22 @@ pipeline {
 			}
 		}
 		stage ('Tests') {
-			parallel 'static': {
-				echo 'shell scripts to run static tests...'
-			},
-			'unit': {
-				echo 'shell scripts to run unit tests...'
-			},
-			'integration': {
-				echo 'shell scripts to run integration tests...'
+			steps {
+				parallel 'static': {
+					echo 'shell scripts to run static tests...'
+				},
+				'unit': {
+					echo 'shell scripts to run unit tests...'
+				},
+				'integration': {
+					echo 'shell scripts to run integration tests...'
+				}
 			}
 		}
 		stage ('Deploy') {
-			echo 'shell scripts to deploy to server...'
+			steps {
+				echo 'shell scripts to deploy to server...'
+			}
 		}
     }
 }
