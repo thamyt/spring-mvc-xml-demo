@@ -24,7 +24,7 @@ pipeline {
 		stage ('Build Docker Image') {
 			steps {
 				bat "echo 'Building docker image...'"
-				sh 'docker build -t tyt/myspringapp:latest ./docker/'
+				docker build -t tyt/myspringapp:latest ./docker/
 			}		
 		}
 		stage ('Tests') {
