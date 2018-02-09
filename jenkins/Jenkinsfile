@@ -1,36 +1,31 @@
 pipeline {
-    try {
-		stages {
-			stage ('Clean Workspace') {
-				// Clean workspace before doing anything
-				deleteDir()		
-			}
-			stage ('Git Clone') {
-				checkout scm
-			}
-			stage ('Build') {
-				steps {
-					bat echo 'Building...'
-					bat 'mvn clean package'
-				}
-			}
-			stage ('Tests') {
-				parallel 'static': {
-					echo 'shell scripts to run static tests...'
-				},
-				'unit': {
-					echo 'shell scripts to run unit tests...'
-				},
-				'integration': {
-					echo 'shell scripts to run integration tests...'
-				}
-			}
-			stage ('Deploy') {
-				echo 'shell scripts to deploy to server...'
+	stages {
+		stage ('Clean Workspace') {
+			// Clean workspace before doing anything
+			deleteDir()		
+		}
+		stage ('Git Clone') {
+			checkout scm
+		}
+		stage ('Build') {
+			steps {
+				bat echo 'Building...'
+				bat 'mvn clean package'
 			}
 		}
-    } catch (err) {
-        currentBuild.result = 'FAILED'
-        throw err
-    }
+		stage ('Tests') {
+			parallel 'static': {
+				echo 'shell scripts to run static tests...'
+			},
+			'unit': {
+				echo 'shell scripts to run unit tests...'
+			},
+			'integration': {
+				echo 'shell scripts to run integration tests...'
+			}
+		}
+		stage ('Deploy') {
+			echo 'shell scripts to deploy to server...'
+		}
+	}
 }
