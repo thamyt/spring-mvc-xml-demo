@@ -1,10 +1,11 @@
 pipeline {
- 	// Clean workspace before doing anything
-    deleteDir()
-
     try {
 		stages {
-			stage ('Clone') {
+			stage ('Clean Workspace') {
+				// Clean workspace before doing anything
+				deleteDir()		
+			}
+			stage ('Git Clone') {
 				checkout scm
 			}
 			stage ('Build') {
