@@ -10,6 +10,8 @@ node {
 		//sh 'mvn clean package'
 	}
 	stage ('Build Docker Image') {
-		docker.build("tyt/myspringapp:8.111", "./docker")
-    }
+		docker.withServer('tcp://192.168.0.103:2375') {
+			docker.build("tyt/myspringapp:8.111", "./docker")
+		}
+	}
 }
