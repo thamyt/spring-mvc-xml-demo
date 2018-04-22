@@ -1,6 +1,5 @@
 node {
-    stages {
-        stage('Clean Workspace') {
+	stage('Clean Workspace') {
 		deleteDir()
 	}
 	stage ('Git Clone') {
@@ -14,6 +13,5 @@ node {
 		dir('docker') {
 			docker.build("tyt/myspringapp:8.111")
 		}
-	}
     }
 }
