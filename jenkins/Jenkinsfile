@@ -10,6 +10,6 @@ node {
 		bat 'mvn clean package'
 	}
 	stage ('Build Docker Image') {
-		docker.build("tyt/myspringapp:8.111", "./docker")
+		docker.build("tyt/myspringapp:8.111", ".\docker")
     }
 }
