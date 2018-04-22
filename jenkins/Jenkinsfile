@@ -23,8 +23,11 @@ pipeline {
 		}
 		stage ('Build Docker Image') {
 			steps {
-				bat 'copy .\\target\\*.war .\\docker'
-				step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: false, cloud: 'docker', dockerFileDirectory: 'docker', pullCredentialsId: '', pushCredentialsId: '', pushOnSuccess: false, tagsString: 'tyt/myspringapp'])
+				dir('docker') {
+					docker.build("tyt/myspringapp:8.111")
+				}	
+				//bat 'copy .\\target\\*.war .\\docker'
+				//step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: false, cloud: 'docker', dockerFileDirectory: 'docker', pullCredentialsId: '', pushCredentialsId: '', pushOnSuccess: false, tagsString: 'tyt/myspringapp'])
 				//dir('docker') {
 				//	docker.build("tyt/myspringapp:${env.BUILD_NUMBER}")
 				//}
