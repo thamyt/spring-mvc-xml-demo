@@ -6,10 +6,10 @@ node {
 		checkout scm
 	}
 	stage ('Build') {
-		bat "echo 'Building...'"
-		bat 'mvn clean package'
+		sh "echo 'Building...'"
+		sh 'mvn clean package'
 	}
 	stage ('Build Docker Image') {
-		docker.build("tyt/myspringapp:8.111", "../docker")
+		docker.build("tyt/myspringapp:8.111", "./docker")
     }
 }
