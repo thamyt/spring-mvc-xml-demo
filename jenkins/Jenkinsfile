@@ -9,9 +9,7 @@ node {
 		sh "echo 'Building...'"
 		//sh 'mvn clean package'
 	}
-	stage ('Build Docker Image') {
-		docker.withServer('tcp://172.17.0.1:2375') {
-			docker.build("tyt/myspringapp:8.111", "./docker")
-		}
+	stage ('Build Docker Image') {	
+		docker.build("tyt/myspringapp:8.111", "./docker")
     }
 }
