@@ -1,15 +1,54 @@
-node("docker") {
-	stage('Clean Workspace') {
-		deleteDir()
-	}
-	stage ('Git Clone') {
-		checkout scm
-	}
-	stage ('Build') {
-		bat "echo 'Building...'"
-		bat 'mvn clean package'
-	}
-	stage ('Build Docker Image') {
-		docker.build("tyt/myspringapp:8.111", "docker")
+pipeline {
+	agent none
+    options {
+        timeout(time: 1, unit: 'HOURS') 
+    }
+    stages {
+        stage('Clean Workspace') {
+            steps {
+                // Clean workspace before doing anything
+				deleteDir()	
+            }
+		}
+		stage ('Git Clone') {
+			steps {
+				checkout scm
+			}
+		}
+		stage ('Build') {
+			steps {
+				bat "echo 'Building...'"
+				bat 'mvn clean package'
+			}
+		}
+		stage ('Build Docker Image') {
+			steps {
+				bat 'copy .\\target\\*.war .\\docker'
+				step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: 'docker', dockerFileDirectory: 'docker', pullCredentialsId: '', pushCredentialsId: '', pushOnSuccess: false, tagsString: 'tyt/myspringapp'])
+				//dir('docker') {
+				//	docker.build("tyt/myspringapp:${env.BUILD_NUMBER}")
+				//}
+			//	bat "echo 'Building docker image...'"
+			//	sh "docker build -t tyt/myspringapp:latest ./docker/"
+			}		
+		}
+		stage ('Tests') {
+			steps {
+				parallel 'static': {
+					bat "echo 'shell scripts to run static tests...'"
+				},
+				'unit': {
+					bat "echo 'shell scripts to run unit tests...'"
+				},
+				'integration': {
+					bat "echo 'shell scripts to run integration tests...'"
+				}
+			}
+		}
+		stage ('Deploy') {
+			steps {
+				bat "echo 'shell scripts to deploy to server...'"
+			}
+		}
     }
 }
