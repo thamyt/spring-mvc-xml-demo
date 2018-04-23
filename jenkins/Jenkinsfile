@@ -17,13 +17,13 @@ pipeline {
 		}
 		stage ('Build') {
 			steps {
-				bat "echo 'Building...'"
-				bat 'mvn clean package'
+				sh "echo 'Building...'"
+				sh 'mvn clean package'
 			}
 		}
 		stage ('Build Docker Image') {
 			steps {
-				bat 'copy .\\target\\*.war .\\docker'
+				sh 'cp ./target/*.war ./docker'
 				step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: 'docker', dockerFileDirectory: 'docker', pullCredentialsId: '', pushCredentialsId: '', pushOnSuccess: false, tagsString: 'tyt/myspringapp'])
 				//dir('docker') {
 				//	docker.build("tyt/myspringapp:${env.BUILD_NUMBER}")
@@ -35,19 +35,19 @@ pipeline {
 		stage ('Tests') {
 			steps {
 				parallel 'static': {
-					bat "echo 'shell scripts to run static tests...'"
+					sh "echo 'shell scripts to run static tests...'"
 				},
 				'unit': {
-					bat "echo 'shell scripts to run unit tests...'"
+					sh "echo 'shell scripts to run unit tests...'"
 				},
 				'integration': {
-					bat "echo 'shell scripts to run integration tests...'"
+					sh "echo 'shell scripts to run integration tests...'"
 				}
 			}
 		}
 		stage ('Deploy') {
 			steps {
-				bat "echo 'shell scripts to deploy to server...'"
+				sh "echo 'shell scripts to deploy to server...'"
 			}
 		}
     }
